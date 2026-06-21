@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>米村家 家系図 — Yonemura Kakeizu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #1a1612;
+    --ink-2:      #3e362d;
+    --ink-muted:  #8c7e6a;
+    --paper:      #ece1c5;
+    --paper-2:    #e6d9b9;
+    --vermilion:  #a8362a;
+    --line-w:     1.1;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    color: var(--ink);
+    font-family: 'Shippori Mincho B1', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(ellipse 800px 600px at 12% 18%, rgba(160,110,50,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 900px 700px at 88% 78%, rgba(160,110,50,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse 600px 500px at 50% 95%, rgba(80,60,30,0.05) 0%, transparent 50%),
+      radial-gradient(ellipse 400px 300px at 70% 30%, rgba(80,60,30,0.04) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+
+  /* Header  ----------------------------------------------------------- */
+  header {
+    padding: 56px 80px 26px;
+    margin: 0 auto;
+    max-width: 2260px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    border-bottom: 1.5px solid var(--ink);
+    position: relative;
+  }
+  header::after {
+    /* second hairline like washi-edge */
+    content: '';
+    position: absolute;
+    left: 80px; right: 80px; bottom: -6px;
+    height: 1px;
+    background: var(--ink);
+    opacity: 0.35;
+  }
+
+  .title-block { flex: 1; min-width: 0; }
+
+  h1 {
+    font-size: 76px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .subtitle {
+    margin-top: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--ink-2);
+    letter-spacing: 0.05em;
+  }
+  .subtitle .sep { margin: 0 10px; color: var(--ink-muted); }
+  .subtitle .jp { font-family: 'Shippori Mincho B1', serif; letter-spacing: 0.1em; }
+
+  .header-right {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+  }
+
+  .kamon {
+    width: 86px;
+    height: 86px;
+    background-image: url('assets/yonemura-crest.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.92;
+  }
+
+  .hanko {
+    color: var(--vermilion);
+    border: 2.5px solid var(--vermilion);
+    padding: 10px 7px 12px;
+    font-family: 'Shippori Mincho B1', serif;
+    font-weight: 700;
+    font-size: 18px;
+    writing-mode: vertical-rl;
+    letter-spacing: 0.25em;
+    text-align: center;
+    transform: rotate(-2deg);
+    opacity: 0.92;
+    line-height: 1.05;
+    background: rgba(168, 54, 42, 0.04);
+  }
+
+  /* Canvas  ----------------------------------------------------------- */
+  .canvas-wrap {
+    overflow: auto;
+    padding: 24px 60px 80px;
+  }
+
+  .canvas {
+    position: relative;
+    width: 2800px;
+    height: 3100px;
+    margin: 0 auto;
+  }
+
+  /* family crest watermark */
+  .canvas::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1250px;
+    height: 1250px;
+    transform: translate(-50%, -50%);
+    background-image: url('assets/yonemura-crest.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.09;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .canvas > * { position: relative; z-index: 1; }
+  .canvas > svg.lines { z-index: 1; }
+
+  /* Gen axis */
+  .gen-axis {
+    position: absolute;
+    top: 12px;
+    width: 220px;
+    text-align: left;
+  }
+  .gen-num-jp {
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .gen-num-jp .ord { color: var(--vermilion); margin-right: 6px; font-size: 18px; }
+  .gen-label-en {
+    margin-top: 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+  .gen-rule {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 80px;
+    height: 1px;
+    background: var(--ink);
+    opacity: 0.55;
+  }
+
+  /* SVG lines */
+  .lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .lines path, .lines line {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.15;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+  }
+  .lines .branch-cross {
+    stroke-dasharray: 5 3;
+    stroke-width: 1;
+    stroke: var(--ink-2);
+  }
+
+  /* Person card  ------------------------------------------------------ */
+  .person, .union {
+    position: absolute;
+    width: 240px;
+  }
+
+  .label-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+  .num {
+    font-style: italic;
+    color: var(--ink-muted);
+    margin-right: 4px;
+    font-size: 12px;
+  }
+  .en-name {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .star {
+    color: var(--vermilion);
+    margin-left: 4px;
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+
+  .body-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 6px;
+  }
+
+  .name-jp {
+    writing-mode: vertical-rl;
+    font-family: 'Shippori Mincho B1', 'Hiragino Mincho ProN', serif;
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    line-height: 1.18;
+    margin: 0;
+    color: var(--ink);
+    flex: 0 0 auto;
+    min-height: 130px;
+  }
+  .name-jp.featured {
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: 0.18em;
+  }
+  .name-jp.foreign {
+    /* spouses outside the Yonemura/Nakamura lines (italics in subtitle) */
+    font-weight: 500;
+  }
+
+  .meta {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11.5px;
+    color: var(--ink-2);
+    letter-spacing: 0.03em;
+    line-height: 1.5;
+    padding-top: 2px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .meta .dates { white-space: nowrap; }
+  .meta .place {
+    color: var(--ink-muted);
+    margin-top: 2px;
+  }
+  .meta .tag {
+    color: var(--ink-muted);
+    font-style: italic;
+  }
+
+  /* Union (spouse married-in stacked beneath) */
+  .union .sub-person { margin-top: 0; }
+
+  .marriage-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .marriage-bar::before,
+  .marriage-bar::after {
+    content: '';
+    height: 5px;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .marriage-bar::before { flex: 0 0 18px; }
+  .marriage-bar::after  { flex: 1 1 auto; }
+
+  /* Floating marriage label (cross-family marriage) */
+  .marriage-label {
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    background: var(--paper);
+    padding: 3px 6px;
+    text-align: left;
+  }
+  .marriage-label em {
+    font-style: italic;
+    color: var(--ink-muted);
+    margin-right: 4px;
+  }
+
+  /* Legend */
+  .legend {
+    position: absolute;
+    right: 30px;
+    bottom: 20px;
+    width: 260px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: 0.04em;
+    line-height: 1.65;
+    border-top: 1px solid var(--ink);
+    padding-top: 10px;
+  }
+  .legend h4 {
+    margin: 0 0 6px;
+    font-family: 'Shippori Mincho B1', serif;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .legend .row { display: flex; gap: 8px; align-items: baseline; }
+  .legend .row .k { flex: 0 0 60px; color: var(--ink-muted); font-style: italic; }
+  .legend .star { color: var(--vermilion); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 4px 80px 36px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    max-width: 2260px;
+    margin: 0 auto;
+  }
+  footer .jp {
+    font-family: 'Shippori Mincho B1', serif;
+    letter-spacing: 0.3em;
+    text-transform: none;
+    margin: 0 14px;
+    color: var(--ink-2);
+  }
+</style>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 56"><rect width="80" height="56" fill="#ece1c5"/><text x="40" y="32" text-anchor="middle" font-size="18" fill="#1a1612">米</text></svg></template>
+</head>
+<body>
+
+<header>
+  <div class="title-block">
+    <h1>米村家　家系図</h1>
+    <div class="subtitle">
+      Yonemura Family Tree
+      <span class="sep">·</span>
+      <span class="jp">鳥取県</span> Tottori, Japan
+      <span class="sep">→</span>
+      Long Beach, California
+      <span class="sep">·</span>
+      <span class="jp">六代</span> Six Generations
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="kamon" role="img" aria-label="Yonemura family crest"></div>
+    <div class="hanko">米村之印</div>
+  </div>
+</header>
+
+<div class="canvas-wrap">
+  <div class="canvas">
+
+    <!-- Generation axis ----------------------------------------------- -->
+    <div class="gen-axis" style="left: 60px;">
+      <div class="gen-num-jp"><span class="ord">〇</span>零代</div>
+      <div class="gen-label-en">Generation 0 · Japan</div>
+    </div>
+    <span class="gen-rule" style="left: 60px;"></span>
+
+    <div class="gen-axis" style="left: 480px;">
+      <div class="gen-num-jp"><span class="ord">一</span>初代</div>
+      <div class="gen-label-en">Generation I · Issei</div>
+    </div>
+    <span class="gen-rule" style="left: 480px;"></span>
+
+    <div class="gen-axis" style="left: 880px;">
+      <div class="gen-num-jp"><span class="ord">二</span>二代</div>
+      <div class="gen-label-en">Generation II · Nisei</div>
+    </div>
+    <span class="gen-rule" style="left: 880px;"></span>
+
+    <div class="gen-axis" style="left: 1300px;">
+      <div class="gen-num-jp"><span class="ord">三</span>三代</div>
+      <div class="gen-label-en">Generation III · Sansei</div>
+    </div>
+    <span class="gen-rule" style="left: 1300px;"></span>
+
+    <div class="gen-axis" style="left: 1720px;">
+      <div class="gen-num-jp"><span class="ord">四</span>四代</div>
+      <div class="gen-label-en">Generation IV · Yonsei</div>
+    </div>
+    <span class="gen-rule" style="left: 1720px;"></span>
+
+    <div class="gen-axis" style="left: 2140px;">
+      <div class="gen-num-jp"><span class="ord">五</span>五代</div>
+      <div class="gen-label-en">Generation V · Gosei</div>
+    </div>
+    <span class="gen-rule" style="left: 2140px;"></span>
+
+
+    <!-- SVG ink lines ------------------------------------------------- -->
+    <svg class="lines" viewBox="0 0 2800 3100" preserveAspectRatio="none">
+
+      <!-- ============ Generation 0: Gonshiro + Tome → Shigeharu ===== -->
+      <path d="M 300 298 L 340 298 L 340 478 L 300 478" />
+      <path d="M 340 388 L 480 388" />
+
+      <!-- ============ Couple 1: Shigeharu + Masano → Yonemura sibs === -->
+      <path d="M 720 388 L 760 388 L 760 568 L 720 568" />
+      <path d="M 760 478 L 820 478" />
+      <line x1="820" y1="188" x2="820" y2="858" />
+      <line x1="820" y1="188" x2="880" y2="188" />
+      <line x1="820" y1="333" x2="880" y2="333" />
+      <line x1="820" y1="478" x2="880" y2="478" />
+      <line x1="820" y1="623" x2="880" y2="623" />
+      <line x1="820" y1="858" x2="880" y2="858" />
+
+      <!-- ============ Couple 2: Shigeichi + Misuyo → Nakamura sibs === -->
+      <path d="M 720 1123 L 760 1123 L 760 1303 L 720 1303" />
+      <path d="M 760 1213 L 820 1213" />
+      <line x1="820" y1="1108" x2="820" y2="1428" />
+      <line x1="820" y1="1108"  x2="880" y2="1108" />
+      <line x1="820" y1="1268" x2="880" y2="1268" />
+      <line x1="820" y1="1428" x2="880" y2="1428" />
+
+      <!-- ============ Marriage Masami ★ × Shizuko ★ → G3 children === -->
+      <path d="M 1120 188 L 1160 188 L 1160 1268 L 1120 1268" />
+      <line class="mu" x1="1154" y1="708" x2="1154" y2="748" />
+      <line class="mu" x1="1166" y1="708" x2="1166" y2="748" />
+      <path d="M 1160 728 L 1220 728" />
+      <line x1="1220" y1="316" x2="1220" y2="836" />
+      <line x1="1220" y1="316" x2="1300" y2="316" />
+      <line x1="1220" y1="486" x2="1300" y2="486" />
+      <line x1="1220" y1="656" x2="1300" y2="656" />
+      <line x1="1220" y1="836" x2="1300" y2="836" />
+
+      <!-- ============ Dennis + Debbie → Mark, Michael ============== -->
+      <path d="M 1540 316 L 1640 316" />
+      <line x1="1640" y1="177" x2="1640" y2="375" />
+      <line x1="1640" y1="177" x2="1720" y2="177" />
+      <line x1="1640" y1="375" x2="1720" y2="375" />
+
+      <!-- ============ Gene + Katy → Aaron ========================== -->
+      <path d="M 1540 486 L 1636 486 L 1636 577 L 1720 577" />
+
+      <!-- ============ Steven ★ × Annie → G4 children ================ -->
+      <path d="M 1540 916 L 1660 916 L 1660 1997" />
+      <line x1="1660" y1="1997" x2="1660" y2="2797" />
+      <line x1="1660" y1="1997" x2="1720" y2="1997" />
+      <line x1="1660" y1="2397" x2="1720" y2="2397" />
+      <line x1="1660" y1="2797" x2="1720" y2="2797" />
+
+      <!-- ============ Lindsey ★ × Brian → G5 children =============== -->
+      <path d="M 1960 2088 L 2080 2088" />
+      <line x1="2080" y1="2003" x2="2080" y2="2173" />
+      <line x1="2080" y1="2003" x2="2140" y2="2003" />
+      <line x1="2080" y1="2173" x2="2140" y2="2173" />
+
+      <!-- ============ Haruo + Teiko → Brian ========================= -->
+      <!-- solid above crossing -->
+      <path d="M 1120 623 L 1135 623 L 1135 1258" />
+      <!-- dashed across the bracket-bottom crossing -->
+      <path class="branch-cross" d="M 1135 1258 L 1135 1280" />
+      <!-- solid below crossing to Brian -->
+      <path d="M 1135 1280 L 1135 1288 L 1300 1288" />
+
+      <!-- ============ Karen + Jimmy → Allison, Jennifer, Kelly ======= -->
+      <path d="M 1540 656 L 1690 656 L 1690 787" />
+      <line x1="1690" y1="787" x2="1690" y2="1381" />
+      <line x1="1690" y1="787" x2="1720" y2="787" />
+      <line x1="1690" y1="1183" x2="1720" y2="1183" />
+      <line x1="1690" y1="1381" x2="1720" y2="1381" />
+
+      <!-- ============ Allison + Chris → Natalie, Emma ================ -->
+      <path d="M 1960 878 L 2060 878" />
+      <line x1="2060" y1="793" x2="2060" y2="963" />
+      <line x1="2060" y1="793" x2="2140" y2="793" />
+      <line x1="2060" y1="963" x2="2140" y2="963" />
+
+      <!-- ============ Brian + Alyssa → Alie ========================== -->
+      <path d="M 1540 1378 L 1638 1378 L 1638 1587 L 1652 1587" />
+      <path class="branch-cross" d="M 1652 1587 L 1668 1587" />
+      <path d="M 1668 1587 L 1720 1587" />
+
+      <!-- ============ Alie + Nick → Jones ============================ -->
+      <path d="M 1960 1678 L 2140 1678" />
+
+    </svg>
+
+
+    <!-- ============== G0 — Generation 0 (Japan) ==================== -->
+    <div class="person" style="left: 60px; top: 210px;">
+      <div class="label-en"><span class="en-name">Gonshiro Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp featured">米村<br>権四郎</div>
+        <div class="meta">
+          <div class="tag">Great-great-grandfather</div>
+          <div class="place">Tottori-ken, Japan</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 60px; top: 390px;">
+      <div class="label-en"><span class="en-name">Tome Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>トメ</div>
+        <div class="meta">
+          <div class="tag">Great-great-grandmother</div>
+          <div class="place">Tottori-ken, Japan</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== G1 — Generation I ============================ -->
+    <div class="person" style="left: 480px; top: 300px;">
+      <div class="label-en"><span class="en-name">Shigeharu Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp featured">米村<br>重治</div>
+        <div class="meta">
+          <div class="dates">1897.03.15 ~ 1975.07.07</div>
+          <div class="tag">Great-grandfather</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 480px; top: 480px;">
+      <div class="label-en"><span class="en-name">Masano Mitsuda</span></div>
+      <div class="body-row">
+        <div class="name-jp">光田<br>まさの</div>
+        <div class="meta">
+          <div class="dates">1889.01.03 ~ 1970.08.09</div>
+          <div class="tag">Great-grandmother</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 480px; top: 1035px;">
+      <div class="label-en"><span class="en-name">Shigeichi “Sammy” Nakamura</span></div>
+      <div class="body-row">
+        <div class="name-jp featured">中村<br>重一</div>
+        <div class="meta">
+          <div class="dates">1888.10.20 ~ 1966.01.31</div>
+          <div class="tag">Great-grandfather</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 480px; top: 1215px;">
+      <div class="label-en"><span class="en-name">Misuyo Nakamura</span></div>
+      <div class="body-row">
+        <div class="name-jp">中村<br>みすよ</div>
+        <div class="meta">
+          <div class="dates">1896.08.19 ~ 1977.06.28</div>
+          <div class="tag">Great-grandmother</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============== G2 — Generation II =========================== -->
+    <!-- Yonemura sibs -->
+    <div class="person" style="left: 880px; top: 100px;">
+      <div class="label-en"><span class="num">(1S)</span><span class="en-name">Masami Yonemura</span><span class="star">★</span></div>
+      <div class="body-row">
+        <div class="name-jp featured">米村<br>正美</div>
+        <div class="meta">
+          <div class="dates">1919.11.03 ~ 2013.02.06</div>
+          <div class="place">Tottori-ken · Long Beach, CA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 880px; top: 245px;">
+      <div class="label-en"><span class="num">(2S)</span><span class="en-name">Sakae Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>栄</div>
+        <div class="meta">
+          <div class="dates">1921.08.03</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 880px; top: 390px;">
+      <div class="label-en"><span class="num">(1D)</span><span class="en-name">Fumiye Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>文枝</div>
+        <div class="meta">
+          <div class="dates">1922.12.04</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 880px; top: 535px;">
+      <div class="label-en"><span class="num">(3S)</span><span class="en-name">Haruo “Larry” Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>春雄</div>
+        <div class="meta">
+          <div class="dates">1925.01.21 ~ 2003.09.24</div>
+          <div style="margin-top:6px;padding-top:5px;border-top:0.5px solid var(--ink-muted);font-family:'Cormorant Garamond',serif;font-size:11px;color:var(--ink-2);letter-spacing:0.03em;">m. Teiko Uyeda 上田テイコ<br>1928.05.29 ~ 1998.06.19</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 880px; top: 770px;">
+      <div class="label-en"><span class="num">(2D)</span><span class="en-name">Sumie Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>澄江</div>
+        <div class="meta">
+          <div class="dates">1927.08.08 ~ 2023.11.29</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nakamura sibs -->
+    <div class="person" style="left: 880px; top: 1020px;">
+      <div class="label-en"><span class="num">(1S)</span><span class="en-name">Haruko Nakamura</span></div>
+      <div class="body-row">
+        <div class="name-jp">中村<br>春子</div>
+        <div class="meta">
+          <div class="dates">1918.03.19</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 880px; top: 1180px;">
+      <div class="label-en"><span class="num">(1D)</span><span class="en-name">Shizuko Lillie Nakamura</span><span class="star">★</span></div>
+      <div class="body-row">
+        <div class="name-jp featured">中村<br>静子</div>
+        <div class="meta">
+          <div class="dates">1921.04.30 ~ 2011.03.12</div>
+          <div class="place">Tottori-ken · Long Beach, CA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="union" style="left: 880px; top: 1340px;">
+      <div class="label-en"><span class="num">(2D)</span><span class="en-name">Mary Nakamura</span></div>
+      <div class="body-row">
+        <div class="name-jp">中村<br>マリー</div>
+        <div class="meta">
+          <div class="dates">1919.09.06 ~ 2014.01.21</div>
+        </div>
+      </div>
+      <div class="marriage-bar"><span>m. Frederick Fujio Hiroto</span></div>
+      <div class="label-en"><span class="en-name">Frederick Fujio Hiroto</span></div>
+      <div class="body-row">
+        <div class="name-jp foreign">ヒロト<br>藤雄</div>
+        <div class="meta">
+          <div class="dates">1917.01.22 ~ 1986.04.16</div>
+          <div class="tag">Married into Nakamura</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marriage label for Masami × Shizuko -->
+    <div class="marriage-label" style="left: 1168px; top: 720px; width: 128px;">
+      <em>M:</em>1944.04.08<br>
+      <span style="margin-left:18px;">Jerome, Arkansas</span>
+    </div>
+
+
+    <!-- ============== G3 — Generation III ========================== -->
+    <div class="person" style="left: 1300px; top: 228px;">
+      <div class="label-en"><span class="num">(1S)</span><span class="en-name">Dennis Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>デニス</div>
+        <div class="meta">
+          <div class="place">Long Beach, CA</div>
+          <div style="margin-top:6px;padding-top:5px;border-top:0.5px solid var(--ink-muted);font-family:'Cormorant Garamond',serif;font-size:11px;color:var(--ink-2);letter-spacing:0.03em;">m. Debbie Yonemura</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 1300px; top: 398px;">
+      <div class="label-en"><span class="num">(2S)</span><span class="en-name">Gene Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>ジーン</div>
+        <div class="meta">
+          <div class="place">Long Beach, CA</div>
+          <div style="margin-top:6px;padding-top:5px;border-top:0.5px solid var(--ink-muted);font-family:'Cormorant Garamond',serif;font-size:11px;color:var(--ink-2);letter-spacing:0.03em;">m. Katy Yonemura</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 1300px; top: 568px;">
+      <div class="label-en"><span class="num">(1D)</span><span class="en-name">Karen Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>カレン</div>
+        <div class="meta">
+          <div class="place">Long Beach, CA</div>
+          <div style="margin-top:6px;padding-top:5px;border-top:0.5px solid var(--ink-muted);font-family:'Cormorant Garamond',serif;font-size:11px;color:var(--ink-2);letter-spacing:0.03em;">m. Jimmy DeSimas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steven ★ × Annie  (union block) -->
+    <div class="union" style="left: 1300px; top: 748px;">
+      <div class="label-en"><span class="num">(3S)</span><span class="en-name">Steven Shigeo Yonemura</span><span class="star">★</span></div>
+      <div class="body-row">
+        <div class="name-jp featured">米村<br>重雄</div>
+        <div class="meta">
+          <div class="place">Long Beach, CA</div>
+        </div>
+      </div>
+      <div class="marriage-bar"><span>M: 1986.06.14 · Long Beach, CA</span></div>
+      <div class="label-en"><span class="en-name">Annie Montoya</span></div>
+      <div class="body-row">
+        <div class="name-jp foreign">アニー<br>モントヤ</div>
+        <div class="meta">
+          <div class="tag">Married into Yonemura</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brian Yonemura — son of Haruo + Teiko -->
+    <div class="union" style="left: 1300px; top: 1200px;">
+      <div class="label-en"><span class="num">(1S)</span><span class="en-name">Brian Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>ブライアン</div>
+        <div class="meta">
+          <div class="tag">Son of Haruo &amp; Teiko</div>
+        </div>
+      </div>
+      <div class="marriage-bar"><span>m. Alyssa Yonemura</span></div>
+      <div class="label-en"><span class="en-name">Alyssa Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp foreign">米村<br>アリッサ</div>
+        <div class="meta">
+          <div class="tag">Spouse</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============== G4 — Generation IV =========================== -->
+    <!-- Mark + Michael — sons of Dennis + Debbie -->
+    <div class="person" style="left: 1720px; top: 90px;">
+      <div class="label-en"><span class="num">(1S)</span><span class="en-name">Mark Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>マーク</div>
+        <div class="meta">
+          <div class="tag">Son of Dennis &amp; Debbie</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 1720px; top: 288px;">
+      <div class="label-en"><span class="num">(2S)</span><span class="en-name">Michael Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>マイケル</div>
+        <div class="meta">
+          <div class="tag">Son of Dennis &amp; Debbie</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aaron M. Yonemura — son of Gene + Katy -->
+    <div class="person" style="left: 1720px; top: 490px;">
+      <div class="label-en"><span class="num">(1S)</span><span class="en-name">Aaron M. Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>アーロン</div>
+        <div class="meta">
+          <div class="dates">1972.09.18 ~ 1973.02.08</div>
+          <div class="tag">Son of Gene &amp; Katy</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Karen's daughters: Allison, Jennifer, Kelly -->
+    <div class="union" style="left: 1720px; top: 700px;">
+      <div class="label-en"><span class="num">(1D)</span><span class="en-name">Allison Schaadt</span></div>
+      <div class="body-row">
+        <div class="name-jp">シャアト<br>アリソン</div>
+        <div class="meta">
+          <div class="tag">Daughter of Karen</div>
+        </div>
+      </div>
+      <div class="marriage-bar"><span>m. Chris Schaadt</span></div>
+      <div class="label-en"><span class="en-name">Chris Schaadt</span></div>
+      <div class="body-row">
+        <div class="name-jp foreign">シャアト<br>クリス</div>
+        <div class="meta">
+          <div class="tag">Spouse</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 1720px; top: 1096px;">
+      <div class="label-en"><span class="num">(2D)</span><span class="en-name">Jennifer DeSimas</span></div>
+      <div class="body-row">
+        <div class="name-jp">デシマス<br>ジェニファー</div>
+        <div class="meta">
+          <div class="tag">Daughter of Karen</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 1720px; top: 1294px;">
+      <div class="label-en"><span class="num">(3D)</span><span class="en-name">Kelly DeSimas</span></div>
+      <div class="body-row">
+        <div class="name-jp">デシマス<br>ケリー</div>
+        <div class="meta">
+          <div class="tag">Daughter of Karen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alie Sheridan — daughter of Brian + Alyssa Yonemura -->
+    <div class="union" style="left: 1720px; top: 1500px;">
+      <div class="label-en"><span class="num">(1D)</span><span class="en-name">Alie Sheridan</span></div>
+      <div class="body-row">
+        <div class="name-jp">シェリダン<br>エイリー</div>
+        <div class="meta">
+          <div class="tag">Daughter of Brian &amp; Alyssa</div>
+        </div>
+      </div>
+      <div class="marriage-bar"><span>m. Nick Sheridan</span></div>
+      <div class="label-en"><span class="en-name">Nick Sheridan</span></div>
+      <div class="body-row">
+        <div class="name-jp foreign">シェリダン<br>ニック</div>
+        <div class="meta">
+          <div class="tag">Spouse</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lindsey ★ × Brian (union block) -->
+    <div class="union" style="left: 1720px; top: 1910px;">
+      <div class="label-en"><span class="num">(1D)</span><span class="en-name">Lindsey Masami Yonemura</span><span class="star">★</span></div>
+      <div class="body-row">
+        <div class="name-jp featured">米村<br>雅美</div>
+        <div class="meta">
+          <div class="place">Long Beach, CA</div>
+        </div>
+      </div>
+      <div class="marriage-bar"><span>M: 2019.11.23 · Los Angeles, CA</span></div>
+      <div class="label-en"><span class="en-name">Brian Kin Sung</span></div>
+      <div class="body-row">
+        <div class="name-jp foreign">宋<br>キン</div>
+        <div class="meta">
+          <div class="tag">Spouse · Sung 宋 family</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="union" style="left: 1720px; top: 2310px;">
+      <div class="label-en"><span class="num">(2D)</span><span class="en-name">Tracey Yumiko Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>弓子</div>
+        <div class="meta">
+          <div class="place">Long Beach, CA</div>
+        </div>
+      </div>
+      <div class="marriage-bar"><span>m. Jack Corrigan</span></div>
+      <div class="label-en"><span class="en-name">Jack Corrigan</span></div>
+      <div class="body-row">
+        <div class="name-jp foreign">コリガン<br>ジャック</div>
+        <div class="meta">
+          <div class="tag">Spouse</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 1720px; top: 2710px;">
+      <div class="label-en"><span class="num">(3D)</span><span class="en-name">Kelsey Emiko Yonemura</span></div>
+      <div class="body-row">
+        <div class="name-jp">米村<br>恵美子</div>
+        <div class="meta">
+          <div class="place">Long Beach, CA</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============== G5 — Generation V ============================ -->
+    <!-- Natalie + Emma Schaadt — daughters of Allison + Chris -->
+    <div class="person" style="left: 2140px; top: 706px;">
+      <div class="label-en"><span class="num">(1D)</span><span class="en-name">Natalie Schaadt</span></div>
+      <div class="body-row">
+        <div class="name-jp">シャアト<br>ナタリー</div>
+        <div class="meta">
+          <div class="tag">Daughter of Allison</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 2140px; top: 876px;">
+      <div class="label-en"><span class="num">(2D)</span><span class="en-name">Emma Schaadt</span></div>
+      <div class="body-row">
+        <div class="name-jp">シャアト<br>エマ</div>
+        <div class="meta">
+          <div class="tag">Daughter of Allison</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jones Sheridan — son of Alie + Nick -->
+    <div class="person" style="left: 2140px; top: 1590px;">
+      <div class="label-en"><span class="num">(1S)</span><span class="en-name">Jones Sheridan</span></div>
+      <div class="body-row">
+        <div class="name-jp">シェリダン<br>ジョーンズ</div>
+        <div class="meta">
+          <div class="tag">Son of Alie &amp; Nick</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Levi + Aiden Sung — sons of Lindsey + Brian -->
+    <div class="person" style="left: 2140px; top: 1916px;">
+      <div class="label-en"><span class="num">(1S)</span><span class="en-name">Levi Ryota Sung</span><span class="star">★</span></div>
+      <div class="body-row">
+        <div class="name-jp featured">宋<br>良太</div>
+        <div class="meta">
+          <div class="tag">Eldest son</div>
+          <div class="place">Long Beach, CA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="person" style="left: 2140px; top: 2086px;">
+      <div class="label-en"><span class="num">(2S)</span><span class="en-name">Aiden Kaito Sung</span><span class="star">★</span></div>
+      <div class="body-row">
+        <div class="name-jp featured">宋<br>海斗</div>
+        <div class="meta">
+          <div class="tag">Youngest son</div>
+          <div class="place">Long Beach, CA</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Legend -->
+    <div class="legend">
+      <h4>凡例　Legend</h4>
+      <div class="row"><div class="k">(1S) (2D)</div><div>Birth order — Son / Daughter</div></div>
+      <div class="row"><div class="k"><span class="star">★</span></div><div>Direct line of descent</div></div>
+      <div class="row"><div class="k">═══</div><div>Marriage union</div></div>
+      <div class="row"><div class="k">│</div><div>Sibling / descendant line</div></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <span>Yonemura Kakeizu</span>
+  <span class="jp">米村家家系図</span>
+  <span>Six Generations · 1890s — Present</span>
+</footer>
+
+</body>
+</html>
